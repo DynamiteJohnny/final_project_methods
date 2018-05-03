@@ -33,7 +33,7 @@ ws = wq + 1 / miu
 ls = l * ws
 
 print("\n---- MEDIDAS DE DESEMPEÑO -------\n")
-print("lambda=%f  miu=%f  Numero de Servidores=%d" % (l, miu, servers))
+print("\tlambda=%f  \n\tmiu=%f  \n\tNumero de Servidores=%d" % (l, miu, servers))
 print("p=%f  p0=%f  Ls=%f  Lq=%f  Ws=%f  Wq=%f\n" % (p, p0, ls, lq, ws, wq))
 
 
@@ -44,15 +44,9 @@ ciw.seed(1)
 #customers queue up to receive service (Sim.nodes[1]) and the exit node where customers leave the system (Sim.nodes[-1])
 Sim = ciw.Simulation(System)
 
-op = int(input("Simulación con: \n\t1. Límite de tiempo\n\t2. Límite de clientes\n\t>>"))
-
-if(op == 1):
-    time = int(input("\n Tiempo: "))
-    Sim.simulate_until_max_time(1440)
-else:
-    clients = int(input("\n Clientes: "))
+clients = int(input("\n Clientes: "))
     # The time is based on the unit of time used for calculating the miu and the lambda
-    Sim.simulate_until_max_customers(clients, progress_bar=False)
+Sim.simulate_until_max_customers(clients, progress_bar=False)
 
 records = Sim.get_all_records()
 records.sort()
@@ -80,6 +74,8 @@ for i in range(len(records)):
     print("Cliente %d -> t espera: %0.4f | t servicio: %0.4f | Llegada: %0.4f | Salida: %0.4f" % (i, waiting_time[i], service_time[i], arrival_date[i], exit_date[i]))
 
 print("\n---- ESTADÍSTICAS ----\n")
+print("Máximo tiempo de espera: %f" % max(waiting_time))
+print("Mínimo tiempo de espera: %f" % min(waiting_time))
 print("Promedio de tiempo de servicio: %f" % mediaservicio)
 print("Promedio de tiempo de espera: %f" % mediaespera)
 print("Promedio de fila: %f" % mediacola)
