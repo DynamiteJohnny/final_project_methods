@@ -10,11 +10,13 @@ public class Person extends Thread {
     long leave_time = 0;
     long leave_queue = 0;
 
+    int lambda;
 
-    public Person(int id, Window w, long arrive_time){
+    public Person(int id, Window w, long arrive_time, int lambda){
         this.id = id;
         this.w = w;
         this.arrive_time = arrive_time;
+        this.lambda = lambda;
     }
 
     public void setW(Window w, long time_going_to_window) {
@@ -37,11 +39,14 @@ public class Person extends Thread {
 
         Random random = new Random();
 
-        int randomTime = random.nextInt(3000 - 1000 + 1) + 1000;
+        float low = (float) (lambda-(lambda*0.30));
+        float high = (float) (lambda+(lambda*0.30));
+
+        long rand = (long) (low + random.nextFloat() * (high - low));
 
         try {
             System.out.println("Person with id: " + this.id + " getting atteded at window: " + w.getId());
-            Thread.sleep(randomTime);
+            Thread.sleep(rand);
             w.setBusy(false);
 
             leave_queue = this.arrive_time - this.in_window_time;

@@ -6,6 +6,7 @@ public class Queue{
     int windowNumber;
 
     int miu;
+    int lambda;
 
     List<Window> winList = new ArrayList<Window>();
 
@@ -13,10 +14,11 @@ public class Queue{
 
     int clientsToday = 0;
 
-    public Queue(int secondsOpen, int windowNumber, int miu){
+    public Queue(int secondsOpen, int windowNumber, int miu, int lambda){
         this.secondsOpen = secondsOpen;
         this.windowNumber = windowNumber;
         this.miu = miu;
+        this.lambda = lambda;
 
         for(int i = 0; i<windowNumber; i++){
             Window window = new Window(i);
@@ -39,7 +41,7 @@ public class Queue{
 
             TimeUnit.SECONDS.sleep(rand);
 
-            Person person = new Person(clientsToday, null, System.currentTimeMillis());
+            Person person = new Person(clientsToday, null, System.currentTimeMillis(), lambda);
             clientsToday++;
             clientQueue.add(person);
 
@@ -80,7 +82,11 @@ public class Queue{
         System.out.println("Introduce miu(segundos) : ");
         int miu = sc.nextInt();
 
-        Queue service = new Queue(15, 4, miu);
+        System.out.println("Introduce lambda(segundos) : ");
+        int lambda = sc.nextInt();
+
+
+        Queue service = new Queue(15, 4, miu, lambda);
         service.run();
     }
 }
