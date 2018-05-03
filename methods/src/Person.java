@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Person extends Thread {
 
@@ -36,7 +37,7 @@ public class Person extends Thread {
 
     @Override
     public void run() {
-
+        System.out.println("Person with id: " + this.id + " getting atteded at window: " + w.getId());
         Random random = new Random();
 
         float low = (float) (lambda-(lambda*0.30));
@@ -45,8 +46,7 @@ public class Person extends Thread {
         long rand = (long) (low + random.nextFloat() * (high - low));
 
         try {
-            System.out.println("Person with id: " + this.id + " getting atteded at window: " + w.getId());
-            Thread.sleep(rand);
+            TimeUnit.SECONDS.sleep(rand);
             w.setBusy(false);
 
             leave_queue = this.arrive_time - this.in_window_time;
@@ -55,5 +55,7 @@ public class Person extends Thread {
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
+        System.out.println("Person with id: " + this.id + " leaving");
+
     }
 }
