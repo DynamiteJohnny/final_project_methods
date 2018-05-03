@@ -4,6 +4,7 @@ public class Queue{
     int secondsOpen;
     int windowNumber;
 
+
     List<Window> winList = new ArrayList<Window>();
 
     java.util.Queue<Person> clientQueue = new LinkedList<>();
@@ -28,23 +29,29 @@ public class Queue{
         while(System.currentTimeMillis() < end) {
             Random random = new Random();
             int rand = random.nextInt(20 - 1 + 1) + 1;
+
             if(rand == 1) {
-                Person person = new Person(clientsToday, null);
+                Person person = new Person(clientsToday, null, System.currentTimeMillis());
                 clientsToday++;
                 clientQueue.add(person);
             }
 
+            long attention_startTime = System.currentTimeMillis();
             int freeWindow = consultFreeWindow();
 
             if(freeWindow != -1 && !clientQueue.isEmpty()){
                 Person personInTurn = clientQueue.remove();
                 Window w = winList.get(freeWindow);
-                personInTurn.setW(w);
+                personInTurn.setW(w,attention_startTime);
                 w.setBusy(true);
 
                 Thread th = new Thread(personInTurn);
                 th.start();
+
+                long queue_time = personInTurn.getLeave_queue();
+                long leave_time = personInTurn.getLeave_time();
             }
+
         }
     }
 
@@ -66,5 +73,3 @@ public class Queue{
         service.run();
     }
 }
-
-
